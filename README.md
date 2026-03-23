@@ -1,7 +1,7 @@
 # Shamana — Music Agents
 
 > Autonomous AI agents navigate a fog of undiscovered music on your behalf,
-> crystallizing every discovery as an immutable event on Hedera Consensus Service.
+> crystallizing every discovery as an immutable event on Hedera Consensus Service. Watch [Demo](https://youtu.be/DzH1AiIgAv0).
 
 **Hedera Hello Future Apex Hackathon 2026 — Theme 1: AI & Agents**
 

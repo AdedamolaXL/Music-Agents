@@ -1,4 +1,4 @@
-import { NextResponse } from 'next/server'
+import { NextResponse, NextRequest } from 'next/server'
 import { getWorldState } from '@/lib/primitives/world'  
 import { deductPhi, shouldFreeze } from '@/lib/primitives/phi'
 import { crystallize, attachHcsSequenceNumber } from '@/lib/primitives/event'
@@ -9,7 +9,7 @@ import { error } from 'console'
 const FOLLOW_PHI_COST = 8
 const FOLLOW_REPUTATION_GAIN = 5
 
-export async function POST(req: Request) {
+export async function POST(req: NextRequest) {
   try {
     const { followerId, guideId } = await req.json()
 

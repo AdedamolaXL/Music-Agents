@@ -1,15 +1,15 @@
-import { NextResponse } from "next/server";
+import { NextResponse, NextRequest } from "next/server";
 import { getWorldState } from "@/lib/primitives/world";
 import { deductPhi, shouldFreeze } from "@/lib/primitives/phi";  // ← import the safe helpers
 import { LatticeEvent } from "@/types/lattice";
 import type { PhiCost } from "@/types/lattice";
 
 export async function POST(
-  req: Request,
-  { params }: { params: { nodeId: string } }
+  req: NextRequest,
+  { params }: { params: Promise<{ nodeId: string }> }
 ) {
   try {
-    const { nodeId } = params;
+    const { nodeId } = await params;
     const body = await req.json();
     const { actionType, coordinate } = body;
 

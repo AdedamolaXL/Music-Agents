@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server"
+import { NextResponse, NextRequest } from "next/server"
 import { getWorldState, getCatalog } from "@/lib/primitives/world"
 import { deductPhi, replenishPhi, shouldFreeze } from '@/lib/primitives/phi'
 import { crystallize, attachHcsSequenceNumber } from '@/lib/primitives/event'
@@ -7,7 +7,7 @@ import { getFoggedTracks } from "@/lib/fog/catalog"
 import { PHI_COSTS, PHI_REPLENISHMENT, PHI_THRESHOLDS } from "@/lib/primitives/constants" 
 import type { PhiCost } from '@/types/lattice'
 
-export async function POST(req: Request) {
+export async function POST(req: NextRequest) {
   try {
     const { nodeId } = await req.json()
 

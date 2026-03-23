@@ -1,7 +1,7 @@
-import { NextResponse } from 'next/server'
+import { NextResponse, NextRequest } from 'next/server'
 import { tick, getWorldState } from '@/lib/primitives/world'
 
-export async function POST() {
+export async function POST(req: NextRequest) {
   try {
     const newState = await tick()
 
@@ -54,7 +54,7 @@ export async function POST() {
 }
 
 
-export async function GET() {
+export async function GET(req: NextRequest) {
   const state = getWorldState()
   const recentEvents = Object.values(state.events)
   .sort((a, b) => b.coordinate - a.coordinate)  // most recent first

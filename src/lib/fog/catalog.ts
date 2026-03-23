@@ -3,7 +3,7 @@ import { Track, FogCatalog } from '@/types/lattice'
 // Catalog of old Nigerian songs designed for memory recovery.
 // Tags are semantic bridges between vague human memory and exact track identity.
 // A human who says "that song about soldiers marching" should find Zombie.
-// A human who says "the one with the talking drum at weddings" should find Juju classics.
+// A human who says "the one with the taling drum at weddings" should find Juju classics.
 
 export function createCatalog(): FogCatalog {
   return {

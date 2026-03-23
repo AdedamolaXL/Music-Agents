@@ -1,13 +1,13 @@
-import { NextResponse } from "next/server";
+import { NextResponse, NextRequest } from "next/server";
 import { getWorldState } from "@/lib/primitives/world";
 import { PathParamsContext } from "next/dist/shared/lib/hooks-client-context.shared-runtime";
 
 export async function GET(
-  req: Request,
-  { params }: { params: { nodeId: string } }
+  req: NextRequest,
+  { params }: { params: Promise<{ nodeId: string }> }
 ) { 
   try {
-    const { nodeId } = params
+    const { nodeId } = await params
     const state = getWorldState()
     const agent = state.agents[nodeId]
 

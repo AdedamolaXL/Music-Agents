@@ -1,4 +1,4 @@
-import { NextResponse } from 'next/server'
+import { NextResponse, NextRequest } from 'next/server'
 import { v4 as uuidv4 } from 'uuid'
 import { createAgentTopic } from '@/lib/hedera/hcs'
 import { assignIdentity } from '@/lib/primitives/identity'
@@ -7,7 +7,7 @@ import { crystallize } from '@/lib/primitives/event'
 import { registerAgent } from '@/lib/primitives/world'
 import { PHI_COSTS } from '@/lib/primitives/constants'
 
-export async function POST(req: Request) {
+export async function POST(req: NextRequest) {
   try {
     const { hederaAccountId, intent } = await req.json()
     console.log('Spawning agent with intent:', intent)

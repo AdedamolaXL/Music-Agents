@@ -846,10 +846,6 @@ console.log('Discoveries in response:', discoveries)
           to   { opacity: 1; transform: translateY(0); }
         }
 
-        if (data.recentEvents) {
-  setRecentEvents(data.recentEvents)
-}
-
         .agent-grid {
           display: grid;
           grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));

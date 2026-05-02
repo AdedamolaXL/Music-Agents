@@ -1,3 +1,5 @@
+'use client'
+
 import { AgentSummary } from './types'
 import { QUALITY_COLORS } from './constants'
 import { shortId } from './utils'
@@ -16,6 +18,16 @@ export function AgentCard({
   const qualityColor = QUALITY_COLORS[agent.phiBar.quality]
   const isGuide = agent.reputation >= 50
 
+  const handleTopicClick = () => {
+    if (agent.hcsTopicId) {
+      window.open(
+        `https://hashscan.io/testnet/topic/${agent.hcsTopicId}`,
+        '_blank',
+        'noopener,noreferrer'
+      )
+    }
+  }
+
   return (
     <div style={{
       background: isFrozen ? '#0f172a' : '#111827',
@@ -26,25 +38,34 @@ export function AgentCard({
       transition: 'all 0.4s ease',
       boxShadow: isFrozen ? 'none' : `0 4px 32px ${qualityColor}0d`,
       position: 'relative',
-      overflow: 'hidden',
+      // overflow intentionally not set — was clipping the HCS topic link and arrow
     }}>
 
+      {/* Discovery glow — self-clipping so card doesn't need overflow:hidden */}
       {!isFrozen && agent.phiBar.quality === 'discovery' && (
         <div style={{
           position: 'absolute', top: 0, right: 0,
           width: 140, height: 140,
           background: 'radial-gradient(circle, #c084fc0f, transparent 70%)',
           pointerEvents: 'none',
+          borderRadius: '0 16px 0 0',
         }} />
       )}
 
       {/* Header */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 18 }}>
         <div>
-          <div style={{ fontFamily: 'var(--mono)', fontSize: 10, color: '#94a3b8', letterSpacing: '0.15em', marginBottom: 4, textTransform: 'uppercase' }}>
+          <div style={{
+            fontFamily: 'var(--mono)', fontSize: 10, color: '#94a3b8',
+            letterSpacing: '0.15em', marginBottom: 4, textTransform: 'uppercase',
+          }}>
             Agent
           </div>
-          <div style={{ fontFamily: 'var(--mono)', fontSize: 20, fontWeight: 700, color: isFrozen ? '#94a3b8' : '#f1f5f9', letterSpacing: '0.03em', marginBottom: 8 }}>
+          <div style={{
+            fontFamily: 'var(--mono)', fontSize: 20, fontWeight: 700,
+            color: isFrozen ? '#94a3b8' : '#f1f5f9',
+            letterSpacing: '0.03em', marginBottom: 8,
+          }}>
             {shortId(agent.nodeId)}
           </div>
           <div style={{
@@ -59,14 +80,21 @@ export function AgentCard({
               boxShadow: isFrozen ? 'none' : `0 0 8px ${qualityColor}`,
               animation: isFrozen ? 'none' : 'pulse 2s infinite',
             }} />
-            <span style={{ fontFamily: 'var(--mono)', fontSize: 10, color: isFrozen ? '#94a3b8' : qualityColor, letterSpacing: '0.1em', textTransform: 'uppercase' }}>
+            <span style={{
+              fontFamily: 'var(--mono)', fontSize: 10,
+              color: isFrozen ? '#94a3b8' : qualityColor,
+              letterSpacing: '0.1em', textTransform: 'uppercase',
+            }}>
               {agent.phase}
             </span>
           </div>
         </div>
 
         <div style={{ textAlign: 'right' }}>
-          <div style={{ fontFamily: 'var(--mono)', fontSize: 10, color: '#94a3b8', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 4 }}>
+          <div style={{
+            fontFamily: 'var(--mono)', fontSize: 10, color: '#94a3b8',
+            letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 4,
+          }}>
             Reputation
           </div>
           <div style={{
@@ -81,8 +109,14 @@ export function AgentCard({
               background: '#c084fc1a', border: '1px solid #c084fc44',
               borderRadius: 20, padding: '3px 10px',
             }}>
-              <div style={{ width: 5, height: 5, borderRadius: '50%', background: '#c084fc', boxShadow: '0 0 8px #c084fc' }} />
-              <span style={{ fontFamily: 'var(--mono)', fontSize: 10, color: '#c084fc', letterSpacing: '0.1em', textTransform: 'uppercase', fontWeight: 600 }}>
+              <div style={{
+                width: 5, height: 5, borderRadius: '50%',
+                background: '#c084fc', boxShadow: '0 0 8px #c084fc',
+              }} />
+              <span style={{
+                fontFamily: 'var(--mono)', fontSize: 10, color: '#c084fc',
+                letterSpacing: '0.1em', textTransform: 'uppercase', fontWeight: 600,
+              }}>
                 Guide
               </span>
             </div>
@@ -102,6 +136,7 @@ export function AgentCard({
         </div>
       )}
 
+      {/* Footer */}
       <div style={{
         display: 'flex', justifyContent: 'space-between', alignItems: 'center',
         marginTop: 14, paddingTop: 14, borderTop: '1px solid #1e293b',
@@ -113,7 +148,8 @@ export function AgentCard({
               onClick={() => onOpenDrawer?.(agent)}
               style={{
                 color: '#c084fc', marginLeft: 8, cursor: 'pointer',
-                borderBottom: '1px solid #c084fc44', paddingBottom: 1, transition: 'color 0.2s',
+                borderBottom: '1px solid #c084fc44', paddingBottom: 1,
+                transition: 'color 0.2s',
               }}
               onMouseEnter={e => (e.currentTarget.style.color = '#d8b4fe')}
               onMouseLeave={e => (e.currentTarget.style.color = '#c084fc')}
@@ -122,9 +158,36 @@ export function AgentCard({
             </span>
           ) : null}
         </span>
-        <span style={{ fontFamily: 'var(--mono)', fontSize: 11, color: '#64748b', maxWidth: 130, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-          {agent.hcsTopicId}
-        </span>
+
+        {/* HCS topic — clickable link to HashScan */}
+        <div
+          onClick={handleTopicClick}
+          title={`View on HashScan: ${agent.hcsTopicId}`}
+          style={{
+            fontFamily: 'var(--mono)',
+            fontSize: 11,
+            color: '#22d3ee',
+            cursor: 'pointer',
+            padding: '2px 4px',
+            borderRadius: 4,
+            borderBottom: '1px solid #22d3ee44',
+            transition: 'all 0.2s',
+            display: 'flex',
+            alignItems: 'center',
+            gap: 4,
+            whiteSpace: 'nowrap',
+          }}
+          onMouseEnter={e => {
+            e.currentTarget.style.color = '#67e8f9'
+            e.currentTarget.style.borderBottomColor = '#67e8f9'
+          }}
+          onMouseLeave={e => {
+            e.currentTarget.style.color = '#22d3ee'
+            e.currentTarget.style.borderBottomColor = '#22d3ee44'
+          }}
+        >
+          {agent.hcsTopicId} ↗
+        </div>
       </div>
 
       {onFollow && !isGuide && (
@@ -135,6 +198,15 @@ export function AgentCard({
             background: 'transparent', border: '1px solid #334155', borderRadius: 8,
             fontFamily: 'var(--mono)', fontSize: 11, color: '#94a3b8',
             letterSpacing: '0.08em', textTransform: 'uppercase', cursor: 'pointer',
+            transition: 'all 0.2s',
+          }}
+          onMouseEnter={e => {
+            e.currentTarget.style.borderColor = '#475569'
+            e.currentTarget.style.color = '#e2e8f0'
+          }}
+          onMouseLeave={e => {
+            e.currentTarget.style.borderColor = '#334155'
+            e.currentTarget.style.color = '#94a3b8'
           }}
         >
           ⟶ Follow a Guide — 8Φ
